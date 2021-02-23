@@ -32,4 +32,7 @@ const ProductSchema = new mongoose.Schema({
 	shop: { type: mongoose.Schema.ObjectId, ref: 'Shop' }
 });
 
-export default mongoose.model('Product', ProductSchema);
+exports = module.exports = mongoose.model(
+	'Product',
+	ProductSchema
+);
