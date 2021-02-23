@@ -1,6 +1,6 @@
-// import userCtrl from '../controllers/user.controller';
-// import authCtrl from '../controllers/auth.controller';
-// import shopCtrl from '../controllers/shop.controller';
+const userCtrl = require('../controllers/user.controller');
+const authCtrl = require('../controllers/auth.controller');
+const shopCtrl = require('../controllers/shop.controller');
 var express = require('express');
 const router = express.Router();
 

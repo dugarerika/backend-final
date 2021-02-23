@@ -1,5 +1,5 @@
-// import userCtrl from '../controllers/user.controller';
-// import authCtrl from '../controllers/auth.controller';
+const userCtrl = require('../controllers/user.controller');
+const authCtrl = require('../controllers/auth.controller');
 var express = require('express');
 const router = express.Router();
 

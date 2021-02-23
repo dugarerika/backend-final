@@ -1,8 +1,8 @@
-// import orderCtrl from '../controllers/order.controller';
-// import productCtrl from '../controllers/product.controller';
-// import authCtrl from '../controllers/auth.controller';
-// import shopCtrl from '../controllers/shop.controller';
-// import userCtrl from '../controllers/user.controller';
+const orderCtrl = require('../controllers/order.controller');
+const productCtrl = require('../controllers/product.controller');
+const authCtrl = require('../controllers/auth.controller');
+const shopCtrl = require('../controllers/shop.controller');
+const userCtrl = require('../controllers/user.controller');
 var express = require('express');
 const router = express.Router();
 

@@ -6,6 +6,9 @@ var logger = require('morgan');
 
 var app = express();
 
+// conectar a la base de datos
+require('./lib/connectMongoose');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -17,8 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
-app.use('/', require('./routes/user.routes'));
+// app.use('/users', require('./routes/users'));
+app.use('/users', require('./routes/user.routes'));
 app.use('/', require('./routes/auth.routes'));
 app.use('/', require('./routes/shop.routes'));
 app.use('/', require('./routes/product.routes'));
