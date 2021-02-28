@@ -1,0 +1,20 @@
+{
+	"products": [
+		{
+			"name": "Bicicleta",
+			"image": "bici.jpg",
+			"description": "un año de uso",
+			"category": "sports",
+			"quantity": 1,
+			"price": 5000
+		},
+		{
+			"name": "Bicicleta",
+			"image": "bici.jpg",
+			"description": "un año de uso",
+			"category": "sports",
+			"quantity": 1,
+			"price": 5000
+		}
+	]
+}

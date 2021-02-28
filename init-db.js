@@ -7,6 +7,8 @@ require('./lib/i18nSetup');
 
 const db = require('./lib/connectMongoose');
 
+require('./models/product.model');
+
 db.once('open', function() {
 	const rl = readLine.createInterface({
 		input: process.stdin,
@@ -31,7 +33,8 @@ db.once('open', function() {
 function runInstallScript() {
 	async.series(
 		[
-			initUsuarios
+			initUsuarios,
+			initProduct
 		],
 		(err) => {
 			if (err) {
@@ -42,6 +45,25 @@ function runInstallScript() {
 			return process.exit(0);
 		}
 	);
+}
+
+function initProduct(cb) {
+	const Product = mongoose.model('Product');
+
+	Product.remove({}, () => {
+		console.log('Productos borrados.');
+
+		// Cargar anuncios.json
+		const fichero = './products.json';
+		console.log('Cargando ' + fichero + '...');
+
+		Product.cargaJson(fichero, (err, numLoaded) => {
+			if (err) return cb(err);
+
+			console.log(`Se han cargado ${numLoaded} productos.`);
+			return cb(null, numLoaded);
+		});
+	});
 }
 
 function initUsuarios(cb) {

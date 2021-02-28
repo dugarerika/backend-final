@@ -13,12 +13,12 @@ router
 	.get(authCtrl.requireSignin, userCtrl.read)
 	.put(
 		authCtrl.requireSignin,
-		authCtrl.hasAuthorization,
+		// authCtrl.hasAuthorization,¸
 		userCtrl.update
 	)
 	.delete(
 		authCtrl.requireSignin,
-		authCtrl.hasAuthorization,
+		// authCtrl.hasAuthorization,
 		userCtrl.remove
 	);
 router
