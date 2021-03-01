@@ -1,7 +1,4 @@
-const {
-	Order,
-	CartItem
-} = require('../models/order.model');
+const { Order, CartItem } = require('../models/Order');
 const errorHandler = require('./../helpers/dbErrorHandler');
 
 const create = async (req, res) => {

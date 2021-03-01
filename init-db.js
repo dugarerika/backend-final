@@ -7,7 +7,7 @@ require('./lib/i18nSetup');
 
 const db = require('./lib/connectMongoose');
 
-require('./models/product.model');
+require('./models/Product');
 
 db.once('open', function() {
 	const rl = readLine.createInterface({
@@ -67,7 +67,7 @@ function initProduct(cb) {
 }
 
 function initUsuarios(cb) {
-	const User = require('./models/user.model');
+	const User = require('./models/User');
 
 	User.deleteMany({}, () => {
 		console.log('Usuarios borrados.');
