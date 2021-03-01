@@ -50,7 +50,7 @@ function runInstallScript() {
 function initProduct(cb) {
 	const Product = mongoose.model('Product');
 
-	Product.remove({}, () => {
+	Product.deleteMany({}, () => {
 		console.log('Productos borrados.');
 
 		// Cargar anuncios.json
