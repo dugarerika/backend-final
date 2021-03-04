@@ -111,7 +111,7 @@ const stripe_auth = (req, res, next) => {
 			}
 		},
 		(error, response, body) => {
-			//update user
+			//update usuario
 			if (body.error) {
 				return res.status('400').json({
 					error: body.error_description
@@ -125,7 +125,7 @@ const stripe_auth = (req, res, next) => {
 
 const stripeCustomer = (req, res, next) => {
 	if (req.profile.stripe_customer) {
-		//update stripe customer
+		//update stripe cliente
 		myStripe.customers.update(
 			req.profile.stripe_customer,
 			{
