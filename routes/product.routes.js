@@ -1,16 +1,13 @@
 const productCtrl = require('../controllers/product.controller');
+const userCtrl = require('../controllers/user.controller');
 const authCtrl = require('../controllers/auth.controller');
 const shopCtrl = require('../controllers/shop.controller');
 var express = require('express');
 const router = express.Router();
 
 router
-	.route('/api/products/by/:shopId')
-	.post(
-		authCtrl.requireSignin,
-		shopCtrl.isOwner,
-		productCtrl.create
-	)
+	.route('/api/products/by/:userId')
+	.post(authCtrl.requireSignin, productCtrl.create)
 	.get(productCtrl.listByShop);
 
 router
@@ -33,7 +30,7 @@ router
 
 router
 	.route('/api/product/image/:productId')
-	.get(productCtrl.photo, productCtrl.defaultPhoto);
+	.get(productCtrl.photo);
 router
 	.route('/api/product/defaultphoto')
 	.get(productCtrl.defaultPhoto);
@@ -52,6 +49,7 @@ router
 	);
 
 router.param('shopId', shopCtrl.shopByID);
+router.param('userId', userCtrl.userByID);
 router.param('productId', productCtrl.productByID);
 
 module.exports = router;

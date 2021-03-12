@@ -14,7 +14,7 @@ const create = (req, res, next) => {
 			});
 		}
 		let product = new Product(fields);
-		product.shop = req.shop;
+		product.owner = req.owner;
 		if (files.image) {
 			product.image.data = fs.readFileSync(
 				files.image.path

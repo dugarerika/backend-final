@@ -31,7 +31,7 @@ const ProductSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
-	shop: { type: mongoose.Schema.ObjectId, ref: 'Shop' }
+	owner: { type: mongoose.Schema.ObjectId, ref: 'User' }
 });
 
 ProductSchema.statics.cargaJson = function(fichero, cb) {
