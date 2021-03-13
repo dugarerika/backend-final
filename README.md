@@ -3,7 +3,9 @@
   <img alt="Version" src="https://img.shields.io/badge/version-0.0.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-> It is the a project where we want to 
+> It is the a project where we want to
+
+Cambio de Prueba -- Francois
 
 ## Install
 
@@ -18,6 +20,7 @@ npm start
 ```
 
 ## Develpment start
+
 ```sh
 npm run dev
 ```
@@ -26,5 +29,6 @@ npm run dev
 
 Give a ⭐️ if this project helped you!
 
-***
+---
+
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
