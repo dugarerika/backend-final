@@ -30,7 +30,8 @@ router
 
 router
 	.route('/api/product/image/:productId')
-	.get(productCtrl.photo);
+	.get(productCtrl.photo, productCtrl.defaultPhoto);
+
 router
 	.route('/api/product/defaultphoto')
 	.get(productCtrl.defaultPhoto);
