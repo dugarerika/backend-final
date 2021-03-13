@@ -3,6 +3,7 @@ const extend = require('lodash/extend');
 const errorHandler = require('./../helpers/dbErrorHandler');
 const formidable = require('formidable');
 const fs = require('fs');
+const gm = require('gm');
 
 const create = (req, res, next) => {
 	let form = new formidable.IncomingForm();
@@ -58,7 +59,10 @@ const photo = (req, res, next) => {
 	next();
 };
 const defaultPhoto = (req, res) => {
-	return res.sendFile(process.cwd());
+	console.log('Current working directory: ', process.cwd());
+	return res.sendFile(
+		process.cwd() + `/public/defaultphoto.png`
+	);
 };
 
 const read = (req, res) => {

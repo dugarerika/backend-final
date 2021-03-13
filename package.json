@@ -15,6 +15,7 @@
 		"express-jwt": "^6.0.0",
 		"formidable": "^1.2.2",
 		"fs-extra": "^9.1.0",
+		"gm": "^1.23.1",
 		"http-errors": "~1.6.3",
 		"i18n": "^0.13.2",
 		"jsonwebtoken": "^8.5.1",

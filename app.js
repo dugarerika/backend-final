@@ -5,10 +5,13 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var app = express();
-
+const CURRENT_WORKING_DIR = process.cwd();
 // conectar a la base de datos
 require('./lib/connectMongoose');
-
+app.use(
+	'/public',
+	express.static(path.join(CURRENT_WORKING_DIR, 'public'))
+);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
