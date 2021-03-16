@@ -37,15 +37,15 @@ router
 	.get(productCtrl.defaultPhoto);
 
 router
-	.route('/api/product/:shopId/:productId')
+	.route('/api/product/:userId/:productId')
 	.put(
 		authCtrl.requireSignin,
-		shopCtrl.isOwner,
+		userCtrl.isSeller,
 		productCtrl.update
 	)
 	.delete(
 		authCtrl.requireSignin,
-		shopCtrl.isOwner,
+		userCtrl.isSeller,
 		productCtrl.remove
 	);
 

@@ -15,7 +15,7 @@ const create = (req, res, next) => {
 			});
 		}
 		let product = new Product(fields);
-		product.owner = req.owner;
+		product.owner = req.profile;
 		if (files.image) {
 			product.image.data = fs.readFileSync(
 				files.image.path
@@ -36,7 +36,7 @@ const create = (req, res, next) => {
 const productByID = async (req, res, next, id) => {
 	try {
 		let product = await Product.findById(id)
-			.populate('shop', '_id name')
+			.populate('owner', '_id name')
 			.exec();
 		if (!product)
 			return res.status('400').json({
@@ -114,10 +114,8 @@ const remove = async (req, res) => {
 const listByShop = async (req, res) => {
 	try {
 		let products = await Product.find({
-			shop: req.shop._id
-		})
-			.populate('shop', '_id name')
-			.select('-image');
+			owner: req.profile._id
+		}).populate('owner', '_id name');
 		res.json(products);
 	} catch (err) {
 		return res.status(400).json({
@@ -131,7 +129,7 @@ const listLatest = async (req, res) => {
 		let products = await Product.find({})
 			.sort('-created')
 			.limit(5)
-			.populate('shop', '_id name')
+			.populate('owner', '_id name')
 			.exec();
 		res.json(products);
 	} catch (err) {
@@ -148,7 +146,7 @@ const listRelated = async (req, res) => {
 			category: req.product.category
 		})
 			.limit(5)
-			.populate('shop', '_id name')
+			.populate('owner', '_id name')
 			.exec();
 		res.json(products);
 	} catch (err) {
@@ -180,7 +178,7 @@ const list = async (req, res) => {
 		query.category = req.query.category;
 	try {
 		let products = await Product.find(query)
-			.populate('shop', '_id name')
+			.populate('owner', '_id name')
 			.select('-image')
 			.exec();
 		res.json(products);
