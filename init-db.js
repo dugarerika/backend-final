@@ -75,17 +75,19 @@ function initUsuarios(cb) {
 		User.insertMany(
 			[
 				{
-					seller: false,
+					seller: true,
 					name: 'Erika Tavera',
 					email: 'dugarerika@example.com',
 					password: '1234567'
 				},
 				{
+					seller: true,
 					name: 'Alvaro',
 					email: 'elbarenal@gmail.com',
 					password: '1234567'
 				},
 				{
+					seller: true,
 					name: 'Francois',
 					email: 'francoisg@itechcare.net',
 					password: '1234567'

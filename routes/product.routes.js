@@ -38,16 +38,8 @@ router
 
 router
 	.route('/api/product/:userId/:productId')
-	.put(
-		authCtrl.requireSignin,
-		userCtrl.isSeller,
-		productCtrl.update
-	)
-	.delete(
-		authCtrl.requireSignin,
-		userCtrl.isSeller,
-		productCtrl.remove
-	);
+	.put(authCtrl.requireSignin, productCtrl.update)
+	.delete(authCtrl.requireSignin, productCtrl.remove);
 
 router.param('shopId', shopCtrl.shopByID);
 router.param('userId', userCtrl.userByID);
