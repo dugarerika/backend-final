@@ -13,7 +13,6 @@ router
 	.post(
 		authCtrl.requireSignin,
 		authCtrl.hasAuthorization,
-		userCtrl.isSeller,
 		shopCtrl.create
 	)
 	.get(

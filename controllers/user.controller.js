@@ -198,7 +198,6 @@ exports = module.exports = {
 	list,
 	remove,
 	update,
-	isSeller,
 	stripe_auth,
 	stripeCustomer,
 	createCharge
