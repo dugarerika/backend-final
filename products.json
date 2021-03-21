@@ -1,0 +1,36 @@
+{
+	"products": [
+		{
+			"name": "Bicicleta",
+			"image": "bici.jpg",
+			"description": "un año de uso",
+			"category": "sports",
+			"quantity": 1,
+			"price": 5000
+		},
+		{
+			"name": "Computadora",
+			"image": "computadora.jpg",
+			"description": "nuevo",
+			"category": "Electronics",
+			"quantity": 4,
+			"price": 1500
+		},
+		{
+			"name": "Carro",
+			"image": "carro.jpg",
+			"description": "un año de uso",
+			"category": "sports",
+			"quantity": 1,
+			"price": 5000
+		},
+		{
+			"name": "Camiseta",
+			"image": "camiseta.jpg",
+			"description": "nuevo",
+			"category": "clothes",
+			"quantity": 1,
+			"price": 50
+		}
+	]
+}

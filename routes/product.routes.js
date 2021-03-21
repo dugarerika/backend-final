@@ -1,16 +1,13 @@
-// import productCtrl from '../controllers/product.controller';
-// import authCtrl from '../controllers/auth.controller';
-// import shopCtrl from '../controllers/shop.controller';
+const productCtrl = require('../controllers/product.controller');
+const userCtrl = require('../controllers/user.controller');
+const authCtrl = require('../controllers/auth.controller');
+const shopCtrl = require('../controllers/shop.controller');
 var express = require('express');
 const router = express.Router();
 
 router
-	.route('/api/products/by/:shopId')
-	.post(
-		authCtrl.requireSignin,
-		shopCtrl.isOwner,
-		productCtrl.create
-	)
+	.route('/api/products/by/:userId')
+	.post(authCtrl.requireSignin, productCtrl.create)
 	.get(productCtrl.listByShop);
 
 router
@@ -34,24 +31,18 @@ router
 router
 	.route('/api/product/image/:productId')
 	.get(productCtrl.photo, productCtrl.defaultPhoto);
+
 router
 	.route('/api/product/defaultphoto')
 	.get(productCtrl.defaultPhoto);
 
 router
-	.route('/api/product/:shopId/:productId')
-	.put(
-		authCtrl.requireSignin,
-		shopCtrl.isOwner,
-		productCtrl.update
-	)
-	.delete(
-		authCtrl.requireSignin,
-		shopCtrl.isOwner,
-		productCtrl.remove
-	);
+	.route('/api/product/:userId/:productId')
+	.put(authCtrl.requireSignin, productCtrl.update)
+	.delete(authCtrl.requireSignin, productCtrl.remove);
 
 router.param('shopId', shopCtrl.shopByID);
+router.param('userId', userCtrl.userByID);
 router.param('productId', productCtrl.productByID);
 
 module.exports = router;

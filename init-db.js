@@ -7,6 +7,8 @@ require('./lib/i18nSetup');
 
 const db = require('./lib/connectMongoose');
 
+require('./models/Product');
+
 db.once('open', function() {
 	const rl = readLine.createInterface({
 		input: process.stdin,
@@ -31,7 +33,8 @@ db.once('open', function() {
 function runInstallScript() {
 	async.series(
 		[
-			initUsuarios
+			initUsuarios,
+			initProduct
 		],
 		(err) => {
 			if (err) {
@@ -44,8 +47,27 @@ function runInstallScript() {
 	);
 }
 
+function initProduct(cb) {
+	const Product = mongoose.model('Product');
+
+	Product.deleteMany({}, () => {
+		console.log('Productos borrados.');
+
+		// Cargar anuncios.json
+		const fichero = './products.json';
+		console.log('Cargando ' + fichero + '...');
+
+		Product.cargaJson(fichero, (err, numLoaded) => {
+			if (err) return cb(err);
+
+			console.log(`Se han cargado ${numLoaded} productos.`);
+			return cb(null, numLoaded);
+		});
+	});
+}
+
 function initUsuarios(cb) {
-	const User = require('./models/user.model');
+	const User = require('./models/User');
 
 	User.deleteMany({}, () => {
 		console.log('Usuarios borrados.');
@@ -53,17 +75,19 @@ function initUsuarios(cb) {
 		User.insertMany(
 			[
 				{
-					seller: false,
+					seller: true,
 					name: 'Erika Tavera',
 					email: 'dugarerika@example.com',
 					password: '1234567'
 				},
 				{
+					seller: true,
 					name: 'Alvaro',
 					email: 'elbarenal@gmail.com',
 					password: '1234567'
 				},
 				{
+					seller: true,
 					name: 'Francois',
 					email: 'francoisg@itechcare.net',
 					password: '1234567'

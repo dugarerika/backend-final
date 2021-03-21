@@ -3,7 +3,7 @@ const errorHandler = require('../helpers/dbErrorHandler');
 const request = require('request');
 const config = require('../config/config');
 const stripe = require('stripe');
-const User = require('../models/user.model');
+const User = require('../models/User');
 const myStripe = stripe(config.stripe_test_secret_key);
 
 const create = async (req, res) => {
@@ -88,16 +88,6 @@ const remove = async (req, res) => {
 	}
 };
 
-const isSeller = (req, res, next) => {
-	const isSeller = req.profile && req.profile.seller;
-	if (!isSeller) {
-		return res.status('403').json({
-			error: 'User is not a seller'
-		});
-	}
-	next();
-};
-
 const stripe_auth = (req, res, next) => {
 	request(
 		{
@@ -111,7 +101,7 @@ const stripe_auth = (req, res, next) => {
 			}
 		},
 		(error, response, body) => {
-			//update user
+			//update usuario
 			if (body.error) {
 				return res.status('400').json({
 					error: body.error_description
@@ -125,7 +115,7 @@ const stripe_auth = (req, res, next) => {
 
 const stripeCustomer = (req, res, next) => {
 	if (req.profile.stripe_customer) {
-		//update stripe customer
+		//update stripe cliente
 		myStripe.customers.update(
 			req.profile.stripe_customer,
 			{
@@ -208,7 +198,6 @@ exports = module.exports = {
 	list,
 	remove,
 	update,
-	isSeller,
 	stripe_auth,
 	stripeCustomer,
 	createCharge
