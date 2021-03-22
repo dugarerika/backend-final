@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var nodemailer = require('nodemailer');
+
 var cors = require('cors');
 
 var app = express();
@@ -36,54 +36,6 @@ app.use('/', require('./routes/auth.routes'));
 app.use('/', require('./routes/shop.routes'));
 app.use('/', require('./routes/product.routes'));
 app.use('/', require('./routes/order.routes'));
-
-app.post('/api/form', (req, res) => {
-	const data = req.body;
-
-	const smtpTransport = nodemailer.createTransport({
-		host: 'smtp.gmail.com',
-		/* service: "Gmail", */
-		port: 465,
-		service: 'gmail',
-		auth: {
-			user: 'mariami3004@gmail.com',
-			pass: '@31723Summit'
-		}
-	});
-
-	const htmlEmail = `
-	  <h3>Email enviado desde Wallarock</h3>
-	  <ul>
-	  <li>Email: ${data.email}</li>
-	  <li>Asunto: ${data.asunto}</li>
-	  </ul>
-	  <h3>Mensaje</h3>
-	  <p>${data.mensaje}</p>
-	  `;
-
-	const mailOptions = {
-		from: `mariami3004@gmail.com`,
-		to: 'elbarenal@gmail.com',
-		replyTo: 'elbarenal@gmail.com',
-		subject: `${data.asunto}`,
-		/* text: req.body.mensaje, */
-		html: htmlEmail
-	};
-
-	smtpTransport.sendMail(mailOptions, function(
-		error,
-		info
-	) {
-		console.log(mailOptions);
-		console.log(info);
-		if (error) {
-			return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
-	});
-
-	smtpTransport.close();
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
