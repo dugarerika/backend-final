@@ -2,6 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const config = require('../config/config');
+const nodemailer = require('nodemailer');
 
 const signin = async (req, res) => {
 	try {
@@ -54,6 +55,24 @@ const signout = (req, res) => {
 	});
 };
 
+const forgotPassword = async (req, res) => {
+	const { user } = req.body.mail;
+};
+
+const send = (req, res) => {
+	const mensaje = `
+	<p>Has hecho una solicitud</p>
+	<h3>${req.profile}</h3>
+	<ul><li></li></ul>`;
+
+	let transporter = nodemailer.createTransport({
+		host: 'smtp.ethereal.email',
+		port: 454,
+		secure: false,
+		auth: { user: account.user, pass: account.pass }
+	});
+};
+
 const requireSignin = expressJwt({
 	secret: config.jwtSecret,
 	userProperty: 'auth',
@@ -80,6 +99,8 @@ const hasAuthorization = (req, res, next) => {
 exports = module.exports = {
 	signin,
 	signout,
+	forgotPassword,
+	send,
 	requireSignin,
 	hasAuthorization
 };
