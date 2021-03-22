@@ -2,6 +2,7 @@
 	"name": "backend-final",
 	"version": "0.0.0",
 	"private": true,
+	
 	"scripts": {
 		"start": "node ./bin/www",
 		"dev": "cross-env DEBUG=backend-final:* nodemon"
@@ -28,4 +29,5 @@
 		"request": "^2.88.2",
 		"stripe": "^8.137.0"
 	}
+	
 }
