@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
-
+const bodyparser = require('body-parser');
 var app = express();
 const CURRENT_WORKING_DIR = process.cwd();
 
@@ -20,6 +20,10 @@ app.use(
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// body parser Middleware
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -52,6 +56,14 @@ app.use(function(err, req, res, next) {
 	// render the error page
 	res.status(err.status || 500);
 	res.render('error');
+});
+
+let server = app.listen(4000, function() {
+	let port = server.address().port;
+	console.log(
+		'Server started at http://localhost:%s',
+		port
+	);
 });
 
 module.exports = app;
