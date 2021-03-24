@@ -2,6 +2,9 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const config = require('../config/config');
+var nodemailer = require('nodemailer');
+
+const forgotPassword = async (req, res) => {};
 
 const signin = async (req, res) => {
 	try {
