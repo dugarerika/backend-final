@@ -5,16 +5,13 @@ const config = require('../config/config');
 var nodemailer = require('nodemailer');
 
 const forgotPassword = async (req, res) => {
-	const data = req.body;
-	console.log(req);
-
 	const message = `Verifica tu email, recibiras un link que te permitira recuperar tu contraseña`;
 	let verificationLink;
 	let emailstatus = 'OK';
-	console.log(req.body.data.email);
+	console.log(req.body.email);
 	try {
 		let user = await User.findOne({
-			email: req.body.data.email
+			email: req.body.email
 		});
 		if (!user)
 			return res.status('401').json({
@@ -165,7 +162,7 @@ const sendEmail = async (req, res) => {
 		port: 465,
 		service: 'gmail',
 		auth: {
-			user: 'WallaRock@gmail.com',
+			user: 'WallaRock0@gmail.com',
 			pass: 'pvnahdujnuovnqqe'
 		}
 	});
@@ -173,19 +170,16 @@ const sendEmail = async (req, res) => {
 	const htmlEmail = `
 	<h3>Email enviado desde Wallarock</h3>
 	<ul>
-	<li>Email: ${data.email}</li>
-	<li>Asunto: ${data.asunto}</li>
+	<li>Email: ${req.body.email}</li>
+	<li>Asunto:Email</li>
 	</ul>
 	<h3>Mensaje</h3>
-	<p>${data.mensaje}</p>
 	`;
 
 	const mailOptions = {
-		from: `mariami3004@gmail.com`,
-		to: 'dugarerika@gmail.com',
-		replyTo: 'dugarerika@gmail.com',
-		subject: `${data.asunto}`,
-		/* text: req.body.mensaje, */
+		from: 'WallaRock0@gmail.com',
+		to: `${req.body.email}`,
+		subject: `email`,
 		html: htmlEmail
 	};
 
