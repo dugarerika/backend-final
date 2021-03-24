@@ -21,12 +21,6 @@ router
 		// authCtrl.hasAuthorization,
 		userCtrl.remove
 	);
-router.route('/api/stripe_auth/:userId').put(
-	authCtrl.requireSignin,
-	// authCtrl.hasAuthorization,
-	userCtrl.stripe_auth,
-	userCtrl.update
-);
 
 router.param('userId', userCtrl.userByID);
 
