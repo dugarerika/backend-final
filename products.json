@@ -6,7 +6,8 @@
 			"description": "un año de uso",
 			"category": "sports",
 			"quantity": 1,
-			"price": 5000
+			"price": 5000,
+			"owner": null
 		},
 		{
 			"name": "Computadora",
@@ -14,7 +15,8 @@
 			"description": "nuevo",
 			"category": "Electronics",
 			"quantity": 4,
-			"price": 1500
+			"price": 1500,
+			"owner": null
 		},
 		{
 			"name": "Carro",
@@ -22,7 +24,8 @@
 			"description": "un año de uso",
 			"category": "sports",
 			"quantity": 1,
-			"price": 5000
+			"price": 5000,
+			"owner": null
 		},
 		{
 			"name": "Camiseta",
@@ -30,7 +33,8 @@
 			"description": "nuevo",
 			"category": "clothes",
 			"quantity": 1,
-			"price": 50
+			"price": 50,
+			"owner": null
 		}
 	]
 }
