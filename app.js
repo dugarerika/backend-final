@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var cors = require ('cors');
+
+var cors = require('cors');
 
 
 var app = express();
@@ -14,7 +15,7 @@ const cors = require('cors');
 const CURRENT_WORKING_DIR = process.cwd();
 
 //Solucionamos problema de CORS
-app.use(cors({credentials: true, origin:true}));
+app.use(cors({ credentials: true, origin: true }));
 
 // conectar a la base de datos
 require('./lib/connectMongoose');
@@ -53,10 +54,6 @@ app.use('/', require('./routes/auth.routes'));
 app.use('/', require('./routes/shop.routes'));
 app.use('/', require('./routes/product.routes'));
 app.use('/', require('./routes/order.routes'));
-
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

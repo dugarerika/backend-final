@@ -2,6 +2,95 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const config = require('../config/config');
+var nodemailer = require('nodemailer');
+
+const forgotPassword = async (req, res) => {
+	const message = `Verifica tu email, recibiras un link que te permitira recuperar tu contraseña`;
+	let verificationLink;
+	let emailstatus = 'OK';
+	console.log(req.body.email);
+	try {
+		let user = await User.findOne({
+			email: req.body.email
+		});
+		if (!user)
+			return res.status('401').json({
+				error: 'el email es requerido'
+			});
+
+		const token = jwt.sign(
+			{
+				_id: user._id,
+				name: user.name
+			},
+			config.jwtSecret,
+			{ expiresIn: '10m' }
+		);
+
+		verificationLink = `http://localhost:3000/auth/new-password/${token}`;
+	} catch (err) {
+		return res.status('401').json({
+			error: 'Could not create new token'
+		});
+	}
+
+	try {
+		const smtpTransport = nodemailer.createTransport({
+			host: 'smtp.gmail.com',
+			/* service: "Gmail", */
+			port: 465,
+			service: 'gmail',
+			auth: {
+				user: 'WallaRock0@gmail.com',
+				pass: 'pvnahdujnuovnqqe'
+			}
+		});
+
+		const htmlEmail = `
+		<b>Por favor click en el siguiente link o pegalo en tu navegador para completar el proceso</b>
+		<a href="${verificationLink}">${verificationLink}</a>
+		`;
+		const mailOptions = {
+			from: 'WallaRock0@gmail.com',
+			to: `${req.body.data.email}`,
+			subject: 'Recuperacion de contraseña',
+			html: htmlEmail
+		};
+
+		await smtpTransport.sendMail(mailOptions, function(
+			error,
+			info
+		) {
+			console.log(mailOptions);
+			console.log(info);
+			if (error) {
+				return console.log(error);
+			}
+			console.log('Message sent: ' + info.response);
+		});
+
+		smtpTransport.close();
+	} catch (err) {
+		return res.status(400).json({
+			error: errorHandler.getErrorMessage(err)
+		});
+	}
+
+	try {
+		await user.save();
+	} catch (err) {
+		emailstatus = error;
+		return res.status(400).json({
+			error: errorHandler.getErrorMessage(err)
+		});
+	}
+
+	res.json({
+		message,
+		info: emailstatus,
+		test: verificationLink
+	});
+};
 
 const signin = async (req, res) => {
 	try {
@@ -64,6 +153,51 @@ const requireSignin = expressJwt({
 	]
 });
 
+const sendEmail = async (req, res) => {
+	const data = req.body;
+
+	const smtpTransport = nodemailer.createTransport({
+		host: 'smtp.gmail.com',
+		/* service: "Gmail", */
+		port: 465,
+		service: 'gmail',
+		auth: {
+			user: 'WallaRock0@gmail.com',
+			pass: 'pvnahdujnuovnqqe'
+		}
+	});
+
+	const htmlEmail = `
+	<h3>Email enviado desde Wallarock</h3>
+	<ul>
+	<li>Email: ${req.body.email}</li>
+	<li>Asunto:Email</li>
+	</ul>
+	<h3>Mensaje</h3>
+	`;
+
+	const mailOptions = {
+		from: 'WallaRock0@gmail.com',
+		to: `${req.body.email}`,
+		subject: `email`,
+		html: htmlEmail
+	};
+
+	smtpTransport.sendMail(mailOptions, function(
+		error,
+		info
+	) {
+		console.log(mailOptions);
+		console.log(info);
+		if (error) {
+			return console.log(error);
+		}
+		console.log('Message sent: ' + info.response);
+	});
+
+	smtpTransport.close();
+};
+
 const hasAuthorization = (req, res, next) => {
 	const authorized =
 		req.profile &&
@@ -78,8 +212,10 @@ const hasAuthorization = (req, res, next) => {
 };
 
 exports = module.exports = {
+	forgotPassword,
 	signin,
 	signout,
+	sendEmail,
 	requireSignin,
 	hasAuthorization
 };
