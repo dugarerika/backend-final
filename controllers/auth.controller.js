@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const config = require('../config/config');
 var nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
+const { getMaxListeners } = require('../models/User');
+const API_KEY =
+	'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';
 
 const forgotPassword = async (req, res) => {
 	const message = `Verifica tu email, recibiras un link que te permitira recuperar tu contraseña`;
@@ -36,11 +40,13 @@ const forgotPassword = async (req, res) => {
 
 	try {
 		const smtpTransport = nodemailer.createTransport({
-			host: 'smtp.ethereal.email',
-			port: 587,
+			host: 'smtp.gmail.com',
+			/* service: "Gmail", */
+			port: 465,
+			service: 'gmail',
 			auth: {
-				user: 'maiya.jerde@ethereal.email',
-				pass: 'xCcXHEUvmWE48KYytK'
+				user: 'WallaRock0@gmail.com',
+				pass: 'pvnahdujnuovnqqe'
 			}
 		});
 
@@ -152,44 +158,19 @@ const requireSignin = expressJwt({
 });
 
 const sendEmail = async (req, res) => {
-	const smtpTransport = nodemailer.createTransport({
-		host: 'smtp.ethereal.email',
-		port: 587,
-		auth: {
-			user: 'maiya.jerde@ethereal.email',
-			pass: 'xCcXHEUvmWE48KYytK'
-		}
-	});
-
-	const htmlEmail = `
-	<h3>Email enviado desde Wallarock</h3>
-	<ul>
-	<li>Email: ${req.body.email}</li>
-	<li>Asunto:Email</li>
-	</ul>
-	<h3>Mensaje</h3>
-	`;
-
-	const mailOptions = {
-		from: 'WallaRock0@gmail.com',
+	console.log(req.body);
+	sgMail.setApiKey(API_KEY);
+	const msg = {
 		to: `${req.body.email}`,
-		subject: `email`,
-		html: htmlEmail
+		from: 'Wallarock0@gmail.com',
+		subject:
+			'Alguien se encuentra interesado en tu producto',
+		text: 'Alguien esta interesado en tu producto'
 	};
-
-	smtpTransport.sendMail(mailOptions, function(
-		error,
-		info
-	) {
-		console.log(mailOptions);
-		console.log(info);
-		if (error) {
-			return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
-	});
-
-	smtpTransport.close();
+	sgMail
+		.send(msg)
+		.then((response) => console.log('Email sent'))
+		.catch((error) => console.log(error.message));
 };
 
 const hasAuthorization = (req, res, next) => {
