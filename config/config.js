@@ -9,7 +9,8 @@ const config = {
 			(process.env.IP || 'locahost') +
 			':' +
 			(process.env.MONGO_PORT || '27017') +
-			'/mernproject',
+
+			'/mernproject'
 
 };
 

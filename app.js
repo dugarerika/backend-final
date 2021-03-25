@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var cors = require('cors');
-
+const bodyparser = require('body-parser');
 
 var app = express();
 
@@ -27,19 +27,12 @@ app.use(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//static forder
-app.use(
-	express.static(
-		'/public',
-		express.static(path.join(__dirname, 'public'))
-	)
-);
 
 // body parser Middleware
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
-app.use(cors());
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -53,7 +46,7 @@ app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/auth.routes'));
 app.use('/', require('./routes/shop.routes'));
 app.use('/', require('./routes/product.routes'));
-app.use('/', require('./routes/order.routes'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -72,37 +65,6 @@ app.use(function(err, req, res, next) {
 	// render the error page
 	res.status(err.status || 500);
 	res.render('error');
-});
-
-app.post('/send-email', function(req, res) {
-	let transporter = nodeMailer.createTransport({
-		host: 'smtp.gmail.com',
-		port: 465,
-		secure: true,
-		auth: {
-			// should be replaced with real sender's account
-			user: 'hello@gmail.com',
-			pass: 'test'
-		}
-	});
-	let mailOptions = {
-		// should be replaced with real recipient's account
-		to: 'dugaerika@gmail.com',
-		subject: req.body.subject,
-		text: req.body.message
-	};
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			return console.log(error);
-		}
-		console.log(
-			'Message %s sent: %s',
-			info.messageId,
-			info.response
-		);
-	});
-	res.writeHead(301, { Location: 'index.html' });
-	res.end();
 });
 
 let server = app.listen(4000, function() {

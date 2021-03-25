@@ -4,6 +4,12 @@ const expressJwt = require('express-jwt');
 const config = require('../config/config');
 var nodemailer = require('nodemailer');
 
+const sgMail = require('@sendgrid/mail');
+const { getMaxListeners } = require('../models/User');
+const API_KEY =
+	'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';
+
+
 const forgotPassword = async (req, res) => {
 	const message = `Verifica tu email, recibiras un link que te permitira recuperar tu contraseña`;
 	let verificationLink;
@@ -34,47 +40,28 @@ const forgotPassword = async (req, res) => {
 		});
 	}
 
-	try {
-		const smtpTransport = nodemailer.createTransport({
-			host: 'smtp.gmail.com',
-			/* service: "Gmail", */
-			port: 465,
-			service: 'gmail',
-			auth: {
-				user: 'WallaRock0@gmail.com',
-				pass: 'pvnahdujnuovnqqe'
-			}
-		});
 
-		const htmlEmail = `
+	const htmlEmail = `
 		<b>Por favor click en el siguiente link o pegalo en tu navegador para completar el proceso</b>
 		<a href="${verificationLink}">${verificationLink}</a>
 		`;
-		const mailOptions = {
-			from: 'WallaRock0@gmail.com',
-			to: `${req.body.data.email}`,
-			subject: 'Recuperacion de contraseña',
-			html: htmlEmail
-		};
+	sgMail.setApiKey(API_KEY);
+	const msg = {
+		to: `${req.body.email}`,
+		from: 'Wallarock0@gmail.com',
+		subject: 'Recuperacion de contraseña',
 
-		await smtpTransport.sendMail(mailOptions, function(
-			error,
-			info
-		) {
-			console.log(mailOptions);
-			console.log(info);
-			if (error) {
-				return console.log(error);
-			}
-			console.log('Message sent: ' + info.response);
-		});
+		html: htmlEmail
+	};
 
-		smtpTransport.close();
-	} catch (err) {
-		return res.status(400).json({
-			error: errorHandler.getErrorMessage(err)
-		});
-	}
+	sgMail
+		.send(msg)
+		.then((res) => console.log('Email sent'))
+		.catch((error) => console.log(error.message));
+	return res.status('200').json({
+		message: ` Un email con un link ha sido enviado a su correo`
+	});
+
 
 	try {
 		await user.save();
@@ -154,48 +141,38 @@ const requireSignin = expressJwt({
 });
 
 const sendEmail = async (req, res) => {
-	const data = req.body;
 
-	const smtpTransport = nodemailer.createTransport({
-		host: 'smtp.gmail.com',
-		/* service: "Gmail", */
-		port: 465,
-		service: 'gmail',
-		auth: {
-			user: 'WallaRock0@gmail.com',
-			pass: 'pvnahdujnuovnqqe'
-		}
-	});
-
+	console.log(req.body);
 	const htmlEmail = `
-	<h3>Email enviado desde Wallarock</h3>
-	<ul>
-	<li>Email: ${req.body.email}</li>
-	<li>Asunto:Email</li>
-	</ul>
-	<h3>Mensaje</h3>
-	`;
+		<h1>${req.body.seller}</h1>
+			<br />
+		<b>Hemos recibido la informacion de que ${req.body
+			.shopper} se encuentra interesado en el producto que has subido a nuestra pagina: </b>
+		<h2>Producto: ${req.body.name} </h2>
+		<h2>Precio: ${req.body.price} </h2>
+		<b>Puedes contactacte con alvaro al correo electronico: ${req
+			.body.mailshopper} <b>
 
-	const mailOptions = {
-		from: 'WallaRock0@gmail.com',
-		to: `${req.body.email}`,
-		subject: `email`,
+		`;
+	sgMail.setApiKey(API_KEY);
+	const msg = {
+		to: `${req.body.mailseller}`,
+		from: 'Wallarock0@gmail.com',
+		subject:
+			'Alguien se encuentra interesado en tu producto',
+
 		html: htmlEmail
 	};
 
-	smtpTransport.sendMail(mailOptions, function(
-		error,
-		info
-	) {
-		console.log(mailOptions);
-		console.log(info);
-		if (error) {
-			return console.log(error);
-		}
-		console.log('Message sent: ' + info.response);
+	sgMail
+		.send(msg)
+		.then((res) => console.log('Email sent'))
+		.catch((error) => console.log(error.message));
+	return res.status('200').json({
+		message: ` ${req.body
+			.shopper} Un email con tus datos ha sido enviado al vendedor para que te contacte`
 	});
 
-	smtpTransport.close();
 };
 
 const hasAuthorization = (req, res, next) => {

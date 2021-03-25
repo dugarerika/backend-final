@@ -9,5 +9,4 @@ router
 	.route('/auth/forgotPassword')
 	.post(authCtrl.forgotPassword);
 
-
 module.exports = router;
