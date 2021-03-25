@@ -159,14 +159,20 @@ const requireSignin = expressJwt({
 
 const sendEmail = async (req, res) => {
 	console.log(req.body);
+	const htmlEmail = `
+		<b>${req.body.seller}</b>
+		<a href="${req.body.seller}">${req.body.seller}</a>
+		`;
 	sgMail.setApiKey(API_KEY);
 	const msg = {
-		to: `${req.body.email}`,
+		to: `${req.body.mail}`,
 		from: 'Wallarock0@gmail.com',
 		subject:
 			'Alguien se encuentra interesado en tu producto',
-		text: 'Alguien esta interesado en tu producto'
+
+		html: htmlEmail
 	};
+
 	sgMail
 		.send(msg)
 		.then((response) => console.log('Email sent'))
