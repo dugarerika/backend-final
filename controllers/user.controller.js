@@ -156,41 +156,6 @@ const stripeCustomer = (req, res, next) => {
 	}
 };
 
-const createCharge = (req, res, next) => {
-	if (!req.profile.stripe_seller) {
-		return res.status('400').json({
-			error: 'Please connect your Stripe account'
-		});
-	}
-	myStripe.tokens
-		.create(
-			{
-				customer: req.order.payment_id
-			},
-			{
-				stripeAccount:
-					req.profile.stripe_seller.stripe_user_id
-			}
-		)
-		.then((token) => {
-			myStripe.charges
-				.create(
-					{
-						amount: req.body.amount * 100, //amount in cents
-						currency: 'usd',
-						source: token.id
-					},
-					{
-						stripeAccount:
-							req.profile.stripe_seller.stripe_user_id
-					}
-				)
-				.then((charge) => {
-					next();
-				});
-		});
-};
-
 exports = module.exports = {
 	create,
 	userByID,
@@ -199,6 +164,5 @@ exports = module.exports = {
 	remove,
 	update,
 	stripe_auth,
-	stripeCustomer,
-	createCharge
+	stripeCustomer
 };

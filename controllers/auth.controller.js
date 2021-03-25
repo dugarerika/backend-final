@@ -38,47 +38,26 @@ const forgotPassword = async (req, res) => {
 		});
 	}
 
-	try {
-		const smtpTransport = nodemailer.createTransport({
-			host: 'smtp.gmail.com',
-			/* service: "Gmail", */
-			port: 465,
-			service: 'gmail',
-			auth: {
-				user: 'WallaRock0@gmail.com',
-				pass: 'pvnahdujnuovnqqe'
-			}
-		});
-
-		const htmlEmail = `
+	const htmlEmail = `
 		<b>Por favor click en el siguiente link o pegalo en tu navegador para completar el proceso</b>
 		<a href="${verificationLink}">${verificationLink}</a>
 		`;
-		const mailOptions = {
-			from: 'WallaRock0@gmail.com',
-			to: `${req.body.data.email}`,
-			subject: 'Recuperacion de contraseña',
-			html: htmlEmail
-		};
+	sgMail.setApiKey(API_KEY);
+	const msg = {
+		to: `${req.body.email}`,
+		from: 'Wallarock0@gmail.com',
+		subject: 'Recuperacion de contraseña',
 
-		await smtpTransport.sendMail(mailOptions, function(
-			error,
-			info
-		) {
-			console.log(mailOptions);
-			console.log(info);
-			if (error) {
-				return console.log(error);
-			}
-			console.log('Message sent: ' + info.response);
-		});
+		html: htmlEmail
+	};
 
-		smtpTransport.close();
-	} catch (err) {
-		return res.status(400).json({
-			error: errorHandler.getErrorMessage(err)
-		});
-	}
+	sgMail
+		.send(msg)
+		.then((res) => console.log('Email sent'))
+		.catch((error) => console.log(error.message));
+	return res.status('200').json({
+		message: ` Un email con un link ha sido enviado a su correo`
+	});
 
 	try {
 		await user.save();
