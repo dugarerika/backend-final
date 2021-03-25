@@ -8,4 +8,5 @@ router.route('/auth/email').post(authCtrl.sendEmail);
 router
 	.route('/auth/forgotPassword')
 	.post(authCtrl.forgotPassword);
+
 module.exports = router;

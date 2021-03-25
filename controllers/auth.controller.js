@@ -3,10 +3,12 @@ const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const config = require('../config/config');
 var nodemailer = require('nodemailer');
+
 const sgMail = require('@sendgrid/mail');
 const { getMaxListeners } = require('../models/User');
 const API_KEY =
 	'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';
+
 
 const forgotPassword = async (req, res) => {
 	const message = `Verifica tu email, recibiras un link que te permitira recuperar tu contraseña`;
@@ -38,6 +40,7 @@ const forgotPassword = async (req, res) => {
 		});
 	}
 
+
 	const htmlEmail = `
 		<b>Por favor click en el siguiente link o pegalo en tu navegador para completar el proceso</b>
 		<a href="${verificationLink}">${verificationLink}</a>
@@ -58,6 +61,7 @@ const forgotPassword = async (req, res) => {
 	return res.status('200').json({
 		message: ` Un email con un link ha sido enviado a su correo`
 	});
+
 
 	try {
 		await user.save();
@@ -137,6 +141,7 @@ const requireSignin = expressJwt({
 });
 
 const sendEmail = async (req, res) => {
+
 	console.log(req.body);
 	const htmlEmail = `
 		<h1>${req.body.seller}</h1>
@@ -167,6 +172,7 @@ const sendEmail = async (req, res) => {
 		message: ` ${req.body
 			.shopper} Un email con tus datos ha sido enviado al vendedor para que te contacte`
 	});
+
 };
 
 const hasAuthorization = (req, res, next) => {

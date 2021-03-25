@@ -3,9 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 var cors = require('cors');
 const bodyparser = require('body-parser');
+
 var app = express();
+
+const bodyparser = require('body-parser');
+const nodemailer = require('nodemailer');
+const cors = require('cors');
 const CURRENT_WORKING_DIR = process.cwd();
 
 //Solucionamos problema de CORS
@@ -21,9 +27,11 @@ app.use(
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
 // body parser Middleware
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -38,6 +46,7 @@ app.use('/', require('./routes/user.routes'));
 app.use('/', require('./routes/auth.routes'));
 app.use('/', require('./routes/shop.routes'));
 app.use('/', require('./routes/product.routes'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
